@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">Popular Movies Stage 1</string>
+  <string name="no_connectivity_exception">No connectivity exception</string>
+  <string name="no_connectivity_caption">Oops, no internet connection.</string>
+  <string name="no_data_caption">No data available.</string>
+  <string name="failed_getting_data_caption">Failed getting data.</string>
+  <string name="most_popular_caption">Most Popular</string>
+  <string name="highest_rated_caption">Highest Rated</string>
+  <string name="most_popular_movies_caption">Most Popular Movies</string>
+  <string name="highest_rated_movies_caption">Highest Rated Movies</string>
 </resources>
