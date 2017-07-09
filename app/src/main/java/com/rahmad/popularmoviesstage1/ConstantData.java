@@ -6,7 +6,7 @@ package com.rahmad.popularmoviesstage1;
  * Copyright 2017
  */
 
-public class ConstantData {
+class ConstantData {
 
   public static final String MOVIE_ID_KEY = "movie_id";
 }

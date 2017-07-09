@@ -2,7 +2,7 @@ package com.rahmad.popularmoviesstage1.models.moviedetail;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCompaniesItem {
+@SuppressWarnings("unused") class ProductionCompaniesItem {
 
   @SerializedName("name") private String name;
 

@@ -1,5 +1,6 @@
 package com.rahmad.popularmoviesstage1.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -12,19 +13,11 @@ import android.content.SharedPreferences;
 public class AppSharedPref {
   private static final String FILENAME = "APP_SHARED_DATA";
   private final String isPopularState = "IS_POPULAR_STATE";
-  private static AppSharedPref instance = null;
 
   private final SharedPreferences sharedPreferences;
   private final SharedPreferences.Editor editor;
 
-  public static AppSharedPref getInstance(Context context) {
-    if (instance == null) {
-      instance = new AppSharedPref(context);
-    }
-    return instance;
-  }
-
-  public AppSharedPref(Context context) {
+  @SuppressLint("CommitPrefEdits") public AppSharedPref(Context context) {
     sharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
     editor = sharedPreferences.edit();
   }
@@ -38,12 +31,12 @@ public class AppSharedPref {
     editor.apply();
   }
 
-  public void clear() {
+  @SuppressWarnings("unused") public void clear() {
     editor.clear();
     editor.commit();
   }
 
-  public boolean commit() {
+  @SuppressWarnings("UnusedReturnValue") public boolean commit() {
     return editor.commit();
   }
 }

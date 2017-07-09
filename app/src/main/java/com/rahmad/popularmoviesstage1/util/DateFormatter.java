@@ -13,9 +13,9 @@ import java.util.Locale;
 
 public class DateFormatter {
 
-  private static String formatingDateFromString(String fromFormat, String toFormat, String stringDate) {
+  private static String formatingDateFromString(String toFormat, String stringDate) {
 
-    SimpleDateFormat format = new SimpleDateFormat(fromFormat, Locale.getDefault());
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     try {
       Date newDate = format.parse(stringDate);
       format = new SimpleDateFormat(toFormat, Locale.getDefault());
@@ -27,10 +27,10 @@ public class DateFormatter {
   }
 
   public static String getYear(String value) {
-    return formatingDateFromString("yyyy-MM-dd", "yyyy", value);
+    return formatingDateFromString("yyyy", value);
   }
 
-  public static String getFullDate(String value) {
-    return formatingDateFromString("yyyy-MM-dd", "dd MMM yyyy", value);
+  @SuppressWarnings("unused") public static String getFullDate(String value) {
+    return formatingDateFromString("dd MMM yyyy", value);
   }
 }

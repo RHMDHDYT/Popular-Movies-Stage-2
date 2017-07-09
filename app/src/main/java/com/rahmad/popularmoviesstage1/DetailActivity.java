@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -30,7 +31,6 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-  private Call<MovieDetail> callMovieDetail;
   private TextView textTitle;
   private TextView textSynopsisCaption;
   private TextView textSynopsisContent;
@@ -91,7 +91,7 @@ public class DetailActivity extends AppCompatActivity {
 
   private void getDataDetail(ApiInterface apiService, int movieId, Bundle savedInstanceState) {
 
-    callMovieDetail = apiService.getMovieDetails(movieId, BuildConfig.API_KEY);
+    Call<MovieDetail> callMovieDetail = apiService.getMovieDetails(movieId, BuildConfig.API_KEY);
     if (NetworkUtil.isOnline(this)) {
 
       //null and check saved instance state
@@ -99,7 +99,7 @@ public class DetailActivity extends AppCompatActivity {
         showProgressBar();
 
         callMovieDetail.clone().enqueue(new Callback<MovieDetail>() {
-          @Override public void onResponse(Call<MovieDetail> call, Response<MovieDetail> response) {
+          @Override public void onResponse(@NonNull Call<MovieDetail> call, @NonNull Response<MovieDetail> response) {
             hideProgressBar();
 
             MovieDetail model = response.body();
@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
             }
           }
 
-          @Override public void onFailure(Call<MovieDetail> call, Throwable t) {
+          @Override public void onFailure(@NonNull Call<MovieDetail> call, @NonNull Throwable t) {
             hideProgressBar();
             showFailedCaption();
           }

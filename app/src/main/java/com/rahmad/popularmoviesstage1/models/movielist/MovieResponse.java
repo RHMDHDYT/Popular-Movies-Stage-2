@@ -16,23 +16,23 @@ public class MovieResponse implements Parcelable {
 
   @SerializedName("total_results") private int totalResults;
 
-  public void setPage(int page) {
+  @SuppressWarnings("unused") public void setPage(int page) {
     this.page = page;
   }
 
-  public int getPage() {
+  @SuppressWarnings("unused") public int getPage() {
     return page;
   }
 
-  public void setTotalPages(int totalPages) {
+  @SuppressWarnings("unused") public void setTotalPages(int totalPages) {
     this.totalPages = totalPages;
   }
 
-  public int getTotalPages() {
+  @SuppressWarnings("unused") public int getTotalPages() {
     return totalPages;
   }
 
-  public void setResults(List<MovieResultsItem> results) {
+  @SuppressWarnings("unused") public void setResults(List<MovieResultsItem> results) {
     this.results = results;
   }
 
@@ -41,11 +41,11 @@ public class MovieResponse implements Parcelable {
     return results;
   }
 
-  public void setTotalResults(int totalResults) {
+  @SuppressWarnings("unused") public void setTotalResults(int totalResults) {
     this.totalResults = totalResults;
   }
 
-  public int getTotalResults() {
+  @SuppressWarnings("unused") public int getTotalResults() {
     return totalResults;
   }
 
@@ -60,13 +60,13 @@ public class MovieResponse implements Parcelable {
     dest.writeInt(this.totalResults);
   }
 
-  public MovieResponse() {
+  @SuppressWarnings("unused") public MovieResponse() {
   }
 
-  protected MovieResponse(Parcel in) {
+  private MovieResponse(Parcel in) {
     this.page = in.readInt();
     this.totalPages = in.readInt();
-    this.results = new ArrayList<MovieResultsItem>();
+    this.results = new ArrayList<>();
     in.readList(this.results, MovieResultsItem.class.getClassLoader());
     this.totalResults = in.readInt();
   }

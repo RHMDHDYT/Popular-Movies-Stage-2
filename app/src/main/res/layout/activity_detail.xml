@@ -3,10 +3,12 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:background="@color/black"
+    tools:ignore="Overdraw"
     >
 
 
@@ -16,6 +18,7 @@
       >
 
     <ImageView
+        android:contentDescription="@string/image_backdrop_description"
         android:id="@+id/imageViewBackDrop"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -31,6 +34,7 @@
         />
 
     <ImageView
+        android:contentDescription="@string/image_poster_description"
         android:id="@+id/imageViewPoster"
         android:layout_width="92dp"
         android:layout_height="wrap_content"

@@ -55,39 +55,39 @@ public class MovieDetail {
 
   @SerializedName("status") private String status;
 
-  public void setOriginalLanguage(String originalLanguage) {
+  @SuppressWarnings("unused") public void setOriginalLanguage(String originalLanguage) {
     this.originalLanguage = originalLanguage;
   }
 
-  public String getOriginalLanguage() {
+  @SuppressWarnings("unused") public String getOriginalLanguage() {
     return originalLanguage;
   }
 
-  public void setImdbId(String imdbId) {
+  @SuppressWarnings("unused") public void setImdbId(String imdbId) {
     this.imdbId = imdbId;
   }
 
-  public String getImdbId() {
+  @SuppressWarnings("unused") public String getImdbId() {
     return imdbId;
   }
 
-  public void setVideo(boolean video) {
+  @SuppressWarnings("unused") public void setVideo(boolean video) {
     this.video = video;
   }
 
-  public boolean isVideo() {
+  @SuppressWarnings("unused") public boolean isVideo() {
     return video;
   }
 
-  public void setTitle(String title) {
+  @SuppressWarnings("unused") public void setTitle(String title) {
     this.title = title;
   }
 
-  public String getTitle() {
+  @SuppressWarnings("unused") public String getTitle() {
     return title;
   }
 
-  public void setBackdropPath(String backdropPath) {
+  @SuppressWarnings("unused") public void setBackdropPath(String backdropPath) {
     this.backdropPath = backdropPath;
   }
 
@@ -95,63 +95,63 @@ public class MovieDetail {
     return backdropPath;
   }
 
-  public void setRevenue(int revenue) {
+  @SuppressWarnings("unused") public void setRevenue(int revenue) {
     this.revenue = revenue;
   }
 
-  public int getRevenue() {
+  @SuppressWarnings("unused") public int getRevenue() {
     return revenue;
   }
 
-  public void setGenres(List<GenresItem> genres) {
+  @SuppressWarnings("unused") public void setGenres(List<GenresItem> genres) {
     this.genres = genres;
   }
 
-  public List<GenresItem> getGenres() {
+  @SuppressWarnings("unused") public List<GenresItem> getGenres() {
     return genres;
   }
 
-  public void setPopularity(double popularity) {
+  @SuppressWarnings("unused") public void setPopularity(double popularity) {
     this.popularity = popularity;
   }
 
-  public double getPopularity() {
+  @SuppressWarnings("unused") public double getPopularity() {
     return popularity;
   }
 
-  public void setProductionCountries(List<ProductionCountriesItem> productionCountries) {
+  @SuppressWarnings("unused") public void setProductionCountries(List<ProductionCountriesItem> productionCountries) {
     this.productionCountries = productionCountries;
   }
 
-  public List<ProductionCountriesItem> getProductionCountries() {
+  @SuppressWarnings("unused") public List<ProductionCountriesItem> getProductionCountries() {
     return productionCountries;
   }
 
-  public void setId(int id) {
+  @SuppressWarnings("unused") public void setId(int id) {
     this.id = id;
   }
 
-  public int getId() {
+  @SuppressWarnings("unused") public int getId() {
     return id;
   }
 
-  public void setVoteCount(int voteCount) {
+  @SuppressWarnings("unused") public void setVoteCount(int voteCount) {
     this.voteCount = voteCount;
   }
 
-  public int getVoteCount() {
+  @SuppressWarnings("unused") public int getVoteCount() {
     return voteCount;
   }
 
-  public void setBudget(int budget) {
+  @SuppressWarnings("unused") public void setBudget(int budget) {
     this.budget = budget;
   }
 
-  public int getBudget() {
+  @SuppressWarnings("unused") public int getBudget() {
     return budget;
   }
 
-  public void setOverview(String overview) {
+  @SuppressWarnings("unused") public void setOverview(String overview) {
     this.overview = overview;
   }
 
@@ -159,7 +159,7 @@ public class MovieDetail {
     return overview;
   }
 
-  public void setOriginalTitle(String originalTitle) {
+  @SuppressWarnings("unused") public void setOriginalTitle(String originalTitle) {
     this.originalTitle = originalTitle;
   }
 
@@ -167,15 +167,15 @@ public class MovieDetail {
     return originalTitle;
   }
 
-  public void setRuntime(int runtime) {
+  @SuppressWarnings("unused") public void setRuntime(int runtime) {
     this.runtime = runtime;
   }
 
-  public int getRuntime() {
+  @SuppressWarnings("unused") public int getRuntime() {
     return runtime;
   }
 
-  public void setPosterPath(String posterPath) {
+  @SuppressWarnings("unused") public void setPosterPath(String posterPath) {
     this.posterPath = posterPath;
   }
 
@@ -183,23 +183,23 @@ public class MovieDetail {
     return posterPath;
   }
 
-  public void setSpokenLanguages(List<SpokenLanguagesItem> spokenLanguages) {
+  @SuppressWarnings("unused") public void setSpokenLanguages(List<SpokenLanguagesItem> spokenLanguages) {
     this.spokenLanguages = spokenLanguages;
   }
 
-  public List<SpokenLanguagesItem> getSpokenLanguages() {
+  @SuppressWarnings("unused") public List<SpokenLanguagesItem> getSpokenLanguages() {
     return spokenLanguages;
   }
 
-  public void setProductionCompanies(List<ProductionCompaniesItem> productionCompanies) {
+  @SuppressWarnings("unused") public void setProductionCompanies(List<ProductionCompaniesItem> productionCompanies) {
     this.productionCompanies = productionCompanies;
   }
 
-  public List<ProductionCompaniesItem> getProductionCompanies() {
+  @SuppressWarnings("unused") public List<ProductionCompaniesItem> getProductionCompanies() {
     return productionCompanies;
   }
 
-  public void setReleaseDate(String releaseDate) {
+  @SuppressWarnings("unused") public void setReleaseDate(String releaseDate) {
     this.releaseDate = releaseDate;
   }
 
@@ -207,7 +207,7 @@ public class MovieDetail {
     return releaseDate;
   }
 
-  public void setVoteAverage(double voteAverage) {
+  @SuppressWarnings("unused") public void setVoteAverage(double voteAverage) {
     this.voteAverage = voteAverage;
   }
 
@@ -215,43 +215,43 @@ public class MovieDetail {
     return voteAverage;
   }
 
-  public void setBelongsToCollection(BelongsToCollection belongsToCollection) {
+  @SuppressWarnings("unused") public void setBelongsToCollection(BelongsToCollection belongsToCollection) {
     this.belongsToCollection = belongsToCollection;
   }
 
-  public BelongsToCollection getBelongsToCollection() {
+  @SuppressWarnings("unused") public BelongsToCollection getBelongsToCollection() {
     return belongsToCollection;
   }
 
-  public void setTagline(String tagline) {
+  @SuppressWarnings("unused") public void setTagline(String tagline) {
     this.tagline = tagline;
   }
 
-  public String getTagline() {
+  @SuppressWarnings("unused") public String getTagline() {
     return tagline;
   }
 
-  public void setAdult(boolean adult) {
+  @SuppressWarnings("unused") public void setAdult(boolean adult) {
     this.adult = adult;
   }
 
-  public boolean isAdult() {
+  @SuppressWarnings("unused") public boolean isAdult() {
     return adult;
   }
 
-  public void setHomepage(String homepage) {
+  @SuppressWarnings("unused") public void setHomepage(String homepage) {
     this.homepage = homepage;
   }
 
-  public String getHomepage() {
+  @SuppressWarnings("unused") public String getHomepage() {
     return homepage;
   }
 
-  public void setStatus(String status) {
+  @SuppressWarnings("unused") public void setStatus(String status) {
     this.status = status;
   }
 
-  public String getStatus() {
+  @SuppressWarnings("unused") public String getStatus() {
     return status;
   }
 

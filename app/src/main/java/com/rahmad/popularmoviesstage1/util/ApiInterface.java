@@ -13,7 +13,7 @@ import retrofit2.http.Query;
  * Copyright 2017
  */
 
-public interface ApiInterface {
+@SuppressWarnings("SameParameterValue") public interface ApiInterface {
   @GET("movie/top_rated") Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey);
 
   @GET("movie/popular") Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);

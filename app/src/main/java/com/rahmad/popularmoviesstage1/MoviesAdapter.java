@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
-  private List<MovieResultsItem> moviesList;
-  private Context context;
+  private final List<MovieResultsItem> moviesList;
+  private final Context context;
   private final MoviesAdapterOnClickHandler mClickHandler;
 
   /**
@@ -40,7 +40,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     /**
      * The Movie poster.
      */
-    ImageView moviePoster;
+    final ImageView moviePoster;
 
     /**
      * Instantiates a new Movie view holder.

@@ -36,55 +36,55 @@ public class MovieResultsItem implements Parcelable {
 
   @SerializedName("vote_count") private int voteCount;
 
-  public void setOverview(String overview) {
+  @SuppressWarnings("unused") public void setOverview(String overview) {
     this.overview = overview;
   }
 
-  public String getOverview() {
+  @SuppressWarnings("unused") public String getOverview() {
     return overview;
   }
 
-  public void setOriginalLanguage(String originalLanguage) {
+  @SuppressWarnings("unused") public void setOriginalLanguage(String originalLanguage) {
     this.originalLanguage = originalLanguage;
   }
 
-  public String getOriginalLanguage() {
+  @SuppressWarnings("unused") public String getOriginalLanguage() {
     return originalLanguage;
   }
 
-  public void setOriginalTitle(String originalTitle) {
+  @SuppressWarnings("unused") public void setOriginalTitle(String originalTitle) {
     this.originalTitle = originalTitle;
   }
 
-  public String getOriginalTitle() {
+  @SuppressWarnings("unused") public String getOriginalTitle() {
     return originalTitle;
   }
 
-  public void setVideo(boolean video) {
+  @SuppressWarnings("unused") public void setVideo(boolean video) {
     this.video = video;
   }
 
-  public boolean isVideo() {
+  @SuppressWarnings("unused") public boolean isVideo() {
     return video;
   }
 
-  public void setTitle(String title) {
+  @SuppressWarnings("unused") public void setTitle(String title) {
     this.title = title;
   }
 
-  public String getTitle() {
+  @SuppressWarnings("unused") public String getTitle() {
     return title;
   }
 
-  public void setGenreIds(List<Integer> genreIds) {
+  @SuppressWarnings("unused") public void setGenreIds(List<Integer> genreIds) {
     this.genreIds = genreIds;
   }
 
-  public List<Integer> getGenreIds() {
+  @SuppressWarnings("unused") public List<Integer> getGenreIds() {
     return genreIds;
   }
 
-  public void setPosterPath(String posterPath) {
+  @SuppressWarnings("unused") public void setPosterPath(String posterPath) {
     this.posterPath = posterPath;
   }
 
@@ -92,39 +92,39 @@ public class MovieResultsItem implements Parcelable {
     return posterPath;
   }
 
-  public void setBackdropPath(String backdropPath) {
+  @SuppressWarnings("unused") public void setBackdropPath(String backdropPath) {
     this.backdropPath = backdropPath;
   }
 
-  public String getBackdropPath() {
+  @SuppressWarnings("unused") public String getBackdropPath() {
     return backdropPath;
   }
 
-  public void setReleaseDate(String releaseDate) {
+  @SuppressWarnings("unused") public void setReleaseDate(String releaseDate) {
     this.releaseDate = releaseDate;
   }
 
-  public String getReleaseDate() {
+  @SuppressWarnings("unused") public String getReleaseDate() {
     return releaseDate;
   }
 
-  public void setVoteAverage(double voteAverage) {
+  @SuppressWarnings("unused") public void setVoteAverage(double voteAverage) {
     this.voteAverage = voteAverage;
   }
 
-  public double getVoteAverage() {
+  @SuppressWarnings("unused") public double getVoteAverage() {
     return voteAverage;
   }
 
-  public void setPopularity(double popularity) {
+  @SuppressWarnings("unused") public void setPopularity(double popularity) {
     this.popularity = popularity;
   }
 
-  public double getPopularity() {
+  @SuppressWarnings("unused") public double getPopularity() {
     return popularity;
   }
 
-  public void setId(int id) {
+  @SuppressWarnings("unused") public void setId(int id) {
     this.id = id;
   }
 
@@ -132,19 +132,19 @@ public class MovieResultsItem implements Parcelable {
     return id;
   }
 
-  public void setAdult(boolean adult) {
+  @SuppressWarnings("unused") public void setAdult(boolean adult) {
     this.adult = adult;
   }
 
-  public boolean isAdult() {
+  @SuppressWarnings("unused") public boolean isAdult() {
     return adult;
   }
 
-  public void setVoteCount(int voteCount) {
+  @SuppressWarnings("unused") public void setVoteCount(int voteCount) {
     this.voteCount = voteCount;
   }
 
-  public int getVoteCount() {
+  @SuppressWarnings("unused") public int getVoteCount() {
     return voteCount;
   }
 
@@ -172,13 +172,13 @@ public class MovieResultsItem implements Parcelable {
   public MovieResultsItem() {
   }
 
-  protected MovieResultsItem(Parcel in) {
+  MovieResultsItem(Parcel in) {
     this.overview = in.readString();
     this.originalLanguage = in.readString();
     this.originalTitle = in.readString();
     this.video = in.readByte() != 0;
     this.title = in.readString();
-    this.genreIds = new ArrayList<Integer>();
+    this.genreIds = new ArrayList<>();
     in.readList(this.genreIds, Integer.class.getClassLoader());
     this.posterPath = in.readString();
     this.backdropPath = in.readString();

@@ -2,7 +2,7 @@ package com.rahmad.popularmoviesstage1.models.moviedetail;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SpokenLanguagesItem {
+@SuppressWarnings("unused") class SpokenLanguagesItem {
 
   @SerializedName("name") private String name;
 

@@ -3,6 +3,7 @@ package com.rahmad.popularmoviesstage1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.rahmad.popularmoviesstage1.models.moviedetail.ModelMovieDetail;
-import com.rahmad.popularmoviesstage1.models.moviedetail.MovieDetail;
 import com.rahmad.popularmoviesstage1.models.movielist.MovieResponse;
 import com.rahmad.popularmoviesstage1.models.movielist.MovieResultsItem;
 import com.rahmad.popularmoviesstage1.util.ApiClient;
@@ -34,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
   private TextView textInfoCaption;
   private ProgressBar progressBar;
-  private RecyclerView listMovies;
   private static final int COLUMN_SIZE = 2;
   private Call<MovieResponse> callTopRatedMovies;
   private Call<MovieResponse> callPopularMovies;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_poster_key";
-  private List<MovieResultsItem> moviesList = new ArrayList<>();
+  private final List<MovieResultsItem> moviesList = new ArrayList<>();
   private MoviesAdapter moviesAdapter;
   private SwipeRefreshLayout swipeContainer;
   private Boolean isCurrentPopular;
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-    listMovies = (RecyclerView) findViewById(R.id.grid_poster_movies);
+    RecyclerView listMovies = (RecyclerView) findViewById(R.id.grid_poster_movies);
     swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
     appSharedPref = new AppSharedPref(this);
@@ -120,10 +118,11 @@ public class MainActivity extends AppCompatActivity {
         //if instance not null and contain key bundle then add the data to list
         List<MovieResultsItem> parcelableData = savedInstanceState.getParcelableArrayList(KEY_SAVED_INSTANCE_STATE);
         //add data from parcelable
+        assert parcelableData != null;
         moviesList.addAll(parcelableData);
 
         //if movielist null or size = 0 then show no data caption and clear list
-        if (moviesList == null || moviesList.size() == 0) {
+        if (moviesList.size() == 0) {
           showNoDataCaption();
           clearListData();
         } else {
@@ -157,12 +156,12 @@ public class MainActivity extends AppCompatActivity {
 
     //call the api
     callTopRatedMovies.clone().enqueue(new Callback<MovieResponse>() {
-      @Override public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+      @Override public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
         processSuccessData(response);
       }
 
-      @Override public void onFailure(Call<MovieResponse> call, Throwable t) {
-        processFailedData(t);
+      @Override public void onFailure(@NonNull Call<MovieResponse> call, @NonNull Throwable t) {
+        processFailedData();
       }
     });
   }
@@ -176,12 +175,12 @@ public class MainActivity extends AppCompatActivity {
 
     //call the api
     callPopularMovies.clone().enqueue(new Callback<MovieResponse>() {
-      @Override public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+      @Override public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
         processSuccessData(response);
       }
 
-      @Override public void onFailure(Call<MovieResponse> call, Throwable t) {
-        processFailedData(t);
+      @Override public void onFailure(@NonNull Call<MovieResponse> call, @NonNull Throwable t) {
+        processFailedData();
       }
     });
   }
@@ -191,18 +190,20 @@ public class MainActivity extends AppCompatActivity {
     hideProgressBar();
 
     //check null and empty data
+    //noinspection ConstantConditions
     if (response.body() == null || response.body().getResults().size() == 0) {
       showNoDataCaption();
     } else {
       hideTextCaption();
       moviesList.clear();
+      //noinspection ConstantConditions
       moviesList.addAll(response.body().getResults());
     }
 
     moviesAdapter.notifyDataSetChanged();
   }
 
-  private void processFailedData(Throwable t) {
+  private void processFailedData() {
     //show UI error state
     swipeContainer.setRefreshing(false);
     hideProgressBar();

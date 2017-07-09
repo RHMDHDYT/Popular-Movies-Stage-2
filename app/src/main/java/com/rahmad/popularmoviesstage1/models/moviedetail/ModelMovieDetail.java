@@ -98,7 +98,7 @@ public class ModelMovieDetail implements Parcelable {
   public ModelMovieDetail() {
   }
 
-  protected ModelMovieDetail(Parcel in) {
+  private ModelMovieDetail(Parcel in) {
     this.backdropPath = in.readString();
     this.overview = in.readString();
     this.originalTitle = in.readString();
