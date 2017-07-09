@@ -2,12 +2,19 @@
 <resources>
   <color name="colorPrimary">@color/red600</color>
   <color name="colorPrimaryDark">@color/red800</color>
-  <color name="colorAccent">@color/pinkA200</color>
+  <color name="colorAccent">@color/red800</color>
 
   <color name="pinkA200">#FF4081</color>
   <color name="blueGrey800">#37474F</color>
+  <color name="blueGrey800Trans95">#c837474f</color>
+  <color name="blueGrey900">#263238</color>
+  <color name="black">#000000</color>
   <color name="red600">#E53935</color>
   <color name="red800">#C62828</color>
+  <color name="whiteff">#FFFFFF</color>
+  <color name="whitefa">#FAFAFA</color>
+  <color name="whiteee">#EEEEEE</color>
+  <color name="amber900">#FF6F00</color>
 
 
 </resources>

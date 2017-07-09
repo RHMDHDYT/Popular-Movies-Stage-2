@@ -1,5 +1,6 @@
 package com.rahmad.popularmoviesstage1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.rahmad.popularmoviesstage1.models.moviedetail.ModelMovieDetail;
+import com.rahmad.popularmoviesstage1.models.moviedetail.MovieDetail;
 import com.rahmad.popularmoviesstage1.models.movielist.MovieResponse;
 import com.rahmad.popularmoviesstage1.models.movielist.MovieResultsItem;
 import com.rahmad.popularmoviesstage1.util.ApiClient;
@@ -24,11 +27,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
   private TextView textInfoCaption;
-  private RecyclerView listMovies;
   private ProgressBar progressBar;
+  private RecyclerView listMovies;
   private static final int COLUMN_SIZE = 2;
   private Call<MovieResponse> callTopRatedMovies;
   private Call<MovieResponse> callPopularMovies;
@@ -44,25 +50,38 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
-    listMovies = (RecyclerView) findViewById(R.id.grid_poster_movies);
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+    listMovies = (RecyclerView) findViewById(R.id.grid_poster_movies);
     swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
     appSharedPref = new AppSharedPref(this);
+    //get default state
     isCurrentPopular = appSharedPref.getIsPopularState();
+    //set toolbar title
     setToolbarTitle();
 
-    moviesAdapter = new MoviesAdapter(moviesList, getApplicationContext());
+    moviesAdapter =
+        new MoviesAdapter(moviesList, getApplicationContext(), new MoviesAdapter.MoviesAdapterOnClickHandler() {
+          @Override public void onClick(String data) {
+            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+            intent.putExtra(ConstantData.MOVIE_ID_KEY, data);
+            startActivity(intent);
+          }
+        });
+    //set list config
     listMovies.setHasFixedSize(true);
     listMovies.setLayoutManager(new GridLayoutManager(this, COLUMN_SIZE));
     listMovies.setAdapter(moviesAdapter);
 
+    //set api caller
     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
     callTopRatedMovies = apiService.getTopRatedMovies(BuildConfig.API_KEY);
     callPopularMovies = apiService.getPopularMovies(BuildConfig.API_KEY);
 
+    //get movies data
     getMoviesData(savedInstanceState);
 
+    //set on refresh listener
     swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
         getMoviesData(null, false);
@@ -83,35 +102,47 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void getMoviesData(Bundle savedInstanceState, Boolean enableLoadingIndicatorCenter) {
+
+    //if there is connection then continue
     if (NetworkUtil.isOnline(this)) {
       hideTextCaption();
 
       //null and check saved instance state
       if (savedInstanceState == null || !savedInstanceState.containsKey(KEY_SAVED_INSTANCE_STATE)) {
+
+        //if flag true then call popular movies, else of that then call top rated movies
         if (isCurrentPopular) {
           getPopularMovies(enableLoadingIndicatorCenter);
         } else {
           getTopRatedMovies(enableLoadingIndicatorCenter);
         }
       } else {
+        //if instance not null and contain key bundle then add the data to list
         List<MovieResultsItem> parcelableData = savedInstanceState.getParcelableArrayList(KEY_SAVED_INSTANCE_STATE);
+        //add data from parcelable
         moviesList.addAll(parcelableData);
+
+        //if movielist null or size = 0 then show no data caption and clear list
         if (moviesList == null || moviesList.size() == 0) {
           showNoDataCaption();
           clearListData();
         } else {
+          //else of that refresh the adapter
           hideTextCaption();
           moviesAdapter.notifyDataSetChanged();
         }
       }
     } else {
+      //if didn't have connection then show the UI configuration to show the error
       showNoConnectivityCaption();
       clearListData();
     }
   }
 
   @Override protected void onSaveInstanceState(Bundle outState) {
+    //put list and cast to arraylist
     outState.putParcelableArrayList(KEY_SAVED_INSTANCE_STATE, (ArrayList<? extends Parcelable>) moviesList);
+    //save current flag to shared preferences
     appSharedPref.setIsPopularState(isCurrentPopular);
     appSharedPref.commit();
     super.onSaveInstanceState(outState);
@@ -124,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
       showProgressBar();
     }
 
+    //call the api
     callTopRatedMovies.clone().enqueue(new Callback<MovieResponse>() {
       @Override public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
         processSuccessData(response);
@@ -142,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
       showProgressBar();
     }
 
+    //call the api
     callPopularMovies.clone().enqueue(new Callback<MovieResponse>() {
       @Override public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
         processSuccessData(response);
@@ -157,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     swipeContainer.setRefreshing(false);
     hideProgressBar();
 
+    //check null and empty data
     if (response.body() == null || response.body().getResults().size() == 0) {
       showNoDataCaption();
     } else {
@@ -169,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void processFailedData(Throwable t) {
+    //show UI error state
     swipeContainer.setRefreshing(false);
     hideProgressBar();
     showFailedCaption();
@@ -184,12 +219,14 @@ public class MainActivity extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
+    //options for switching to highest rated movies
     if (id == R.id.action_highest_rated) {
       setTitle(getString(R.string.highest_rated_movies_caption));
       isCurrentPopular = false;
       clearListData();
       getMoviesData(null);
       return true;
+      //options for switching to popular movies
     } else if (id == R.id.action_most_popular) {
       isCurrentPopular = true;
       setTitle(getString(R.string.most_popular_movies_caption));

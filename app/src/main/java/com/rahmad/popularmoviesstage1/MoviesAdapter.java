@@ -15,24 +15,63 @@ import java.util.List;
  * inbox.rahmad@gmail.com
  * Copyright 2017
  */
-
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
   private List<MovieResultsItem> moviesList;
   private Context context;
+  private final MoviesAdapterOnClickHandler mClickHandler;
 
-  public static class MovieViewHolder extends RecyclerView.ViewHolder {
+  /**
+   * The interface that receives onClick messages.
+   */
+  public interface MoviesAdapterOnClickHandler {
+    /**
+     * On click.
+     *
+     * @param data the data
+     */
+    void onClick(String data);
+  }
+
+  /**
+   * The type Movie view holder.
+   */
+  public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    /**
+     * The Movie poster.
+     */
     ImageView moviePoster;
 
+    /**
+     * Instantiates a new Movie view holder.
+     *
+     * @param v the v
+     */
     public MovieViewHolder(View v) {
       super(v);
       moviePoster = (ImageView) v.findViewById(R.id.poster_image);
+
+      v.setOnClickListener(this);
+    }
+
+    @Override public void onClick(View v) {
+      int adapterPosition = getAdapterPosition();
+      String weatherForDay = String.valueOf(moviesList.get(adapterPosition).getId());
+      mClickHandler.onClick(weatherForDay);
     }
   }
 
-  public MoviesAdapter(List<MovieResultsItem> moviesList, Context context) {
+  /**
+   * Instantiates a new Movies adapter.
+   *
+   * @param moviesList the movies list
+   * @param context the context
+   * @param clickHandler the click handler
+   */
+  public MoviesAdapter(List<MovieResultsItem> moviesList, Context context,MoviesAdapterOnClickHandler clickHandler ) {
     this.moviesList = moviesList;
     this.context = context;
+    mClickHandler = clickHandler;
   }
 
   @Override public MoviesAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
