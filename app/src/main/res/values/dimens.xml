@@ -1,2 +1,15 @@
 <resources>
+
+  <dimen name="constraint_match_parent">0dp</dimen>
+
+  <dimen name="margin_empty">0dp</dimen>
+  <dimen name="margin_small">8dp</dimen>
+  <dimen name="margin_medium">16dp</dimen>
+  <dimen name="margin_large">24dp</dimen>
+  <dimen name="margin_extra_large">36dp</dimen>
+
+  <dimen name="padding_footer">24dp</dimen>
+  <dimen name="line_height_thin">1dp</dimen>
+  <dimen name="text_size_movie_title">24sp</dimen>
+  <dimen name="text_size_caption_synopsis">20sp</dimen>
 </resources>
