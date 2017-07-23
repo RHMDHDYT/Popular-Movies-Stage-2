@@ -9,4 +9,7 @@ package com.rahmad.popularmoviesstage1;
 class ConstantData {
 
   public static final String MOVIE_ID_KEY = "movie_id";
+  public static final String SORT_BY_POPULAR = "popular";
+  public static final String SORT_BY_TOP_RATED = "top_rated";
+
 }
