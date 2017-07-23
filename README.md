@@ -1,4 +1,4 @@
-# Popular-Movies-Stage-1
+# Popular-Movies-Stage-2
 
 This project is for Android Fast Track Evaluation.
 
