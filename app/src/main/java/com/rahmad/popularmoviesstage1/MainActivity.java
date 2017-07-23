@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
   private TextView textInfoCaption;
   private ProgressBar progressBar;
   private static final int COLUMN_SIZE = 2;
-  private Call<MovieResponse> callTopRatedMovies;
-  private Call<MovieResponse> callPopularMovies;
+  private Call<MovieResponse> callMovies;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_poster_key";
   private final List<MovieResultsItem> moviesList = new ArrayList<>();
   private MoviesAdapter moviesAdapter;
   private SwipeRefreshLayout swipeContainer;
   private Boolean isCurrentPopular;
   private AppSharedPref appSharedPref;
+  private ApiInterface apiService;
 
   @Override protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -72,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
     listMovies.setAdapter(moviesAdapter);
 
     //set api caller
-    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-    callTopRatedMovies = apiService.getTopRatedMovies(BuildConfig.API_KEY);
-    callPopularMovies = apiService.getPopularMovies(BuildConfig.API_KEY);
+    apiService = ApiClient.getClient().create(ApiInterface.class);
 
     //get movies data
     getMoviesData(savedInstanceState);
@@ -155,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //call the api
-    callTopRatedMovies.clone().enqueue(new Callback<MovieResponse>() {
+    callMovies = apiService.getMovies(ConstantData.SORT_BY_TOP_RATED, BuildConfig.API_KEY);
+    callMovies.clone().enqueue(new Callback<MovieResponse>() {
       @Override public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
         processSuccessData(response);
       }
@@ -174,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //call the api
-    callPopularMovies.clone().enqueue(new Callback<MovieResponse>() {
+    callMovies = apiService.getMovies(ConstantData.SORT_BY_POPULAR, BuildConfig.API_KEY);
+    callMovies.clone().enqueue(new Callback<MovieResponse>() {
       @Override public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
         processSuccessData(response);
       }

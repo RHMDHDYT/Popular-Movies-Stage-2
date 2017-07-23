@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class DetailActivity extends AppCompatActivity {
   private TextView textRatingContent;
   private TextView textDateRelease;
   private RatingBar ratingBar;
+  private CollapsingToolbarLayout collapsingToolbarLayout;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_detail_key";
   private ModelMovieDetail modelMovieDetail = new ModelMovieDetail();
   private ProgressDialog progressDialog;
@@ -56,6 +59,8 @@ public class DetailActivity extends AppCompatActivity {
     textRatingContent = (TextView) findViewById(R.id.textRatingCaption);
     textDateRelease = (TextView) findViewById(R.id.textDateRelease);
     ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+    collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
     progressDialog = new ProgressDialog(this);
     builder = new AlertDialog.Builder(this);
     builder.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
@@ -63,13 +68,12 @@ public class DetailActivity extends AppCompatActivity {
         finish();
       }
     });
-    //set actionbar button
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-    //set title
-    setTitle(getString(R.string.detail_movie_caption));
+    //set actionbar
+    setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setTitle(null);
+    //clear content
+    clearContent();
 
     //set api caller
     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -89,9 +93,22 @@ public class DetailActivity extends AppCompatActivity {
     super.onSaveInstanceState(outState);
   }
 
+  private void clearContent() {
+    textTitle.setText(null);
+    textDateRelease.setText(null);
+    textRatingContent.setText(null);
+    textSynopsisCaption.setText(null);
+    textSynopsisContent.setText(null);
+    ratingBar.setRating(0);
+    imageBackDrop.setImageResource(0);
+    imagePoster.setImageResource(0);
+  }
+
   private void getDataDetail(ApiInterface apiService, int movieId, Bundle savedInstanceState) {
 
+    Log.d("Movie Id", String.valueOf(movieId));
     Call<MovieDetail> callMovieDetail = apiService.getMovieDetails(movieId, BuildConfig.API_KEY);
+
     if (NetworkUtil.isOnline(this)) {
 
       //null and check saved instance state
@@ -101,7 +118,7 @@ public class DetailActivity extends AppCompatActivity {
         callMovieDetail.clone().enqueue(new Callback<MovieDetail>() {
           @Override public void onResponse(@NonNull Call<MovieDetail> call, @NonNull Response<MovieDetail> response) {
             hideProgressBar();
-
+            Log.d("Response Detail", response.body().toString());
             MovieDetail model = response.body();
 
             if (model != null) {
@@ -130,6 +147,8 @@ public class DetailActivity extends AppCompatActivity {
   }
 
   private void showData(ModelMovieDetail modelMovieDetail) {
+    collapsingToolbarLayout.setTitle(modelMovieDetail.getOriginalTitle());
+    collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.transparent));
     textTitle.setText(modelMovieDetail.getOriginalTitle());
     textDateRelease.setText(DateFormatter.getYear(modelMovieDetail.getReleaseDate()));
     textRatingContent.setText(getString(R.string.rating_placeholder_caption, modelMovieDetail.getVoteAverage()));
@@ -142,9 +161,13 @@ public class DetailActivity extends AppCompatActivity {
     String imageSize = "w185";
     String backdropPath = modelMovieDetail.getBackdropPath();
     String posterPath = modelMovieDetail.getPosterPath();
+    String backdropUrl = baseUrl + imageSize + backdropPath;
+    String posterUrl = baseUrl + imageSize + posterPath;
 
-    Picasso.with(getApplicationContext()).load(baseUrl + imageSize + backdropPath).into(imageBackDrop);
-    Picasso.with(getApplicationContext()).load(baseUrl + imageSize + posterPath).into(imagePoster);
+    Picasso.with(getApplicationContext()).load(backdropUrl).into(imageBackDrop);
+    Log.d("Backdrop Url", backdropUrl);
+    Picasso.with(getApplicationContext()).load(posterUrl).into(imagePoster);
+    Log.d("Poster Url", posterUrl);
   }
 
   @Override public boolean onSupportNavigateUp() {
