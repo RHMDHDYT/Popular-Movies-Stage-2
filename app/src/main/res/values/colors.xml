@@ -9,5 +9,6 @@
   <color name="red800">#C62828</color>
   <color name="whiteee">#EEEEEE</color>
   <color name="black">#000000</color>
+  <color name="transparent">#00000000</color>
 
 </resources>
