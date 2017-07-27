@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1.util;
+package com.rahmad.popularmoviesstage2.util;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

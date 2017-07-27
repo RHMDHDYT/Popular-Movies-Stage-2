@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1.util;
+package com.rahmad.popularmoviesstage2.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

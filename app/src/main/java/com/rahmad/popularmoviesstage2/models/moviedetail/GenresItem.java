@@ -1,8 +1,8 @@
-package com.rahmad.popularmoviesstage1.models.moviedetail;
+package com.rahmad.popularmoviesstage2.models.moviedetail;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused") class ProductionCompaniesItem {
+@SuppressWarnings("unused") class GenresItem {
 
   @SerializedName("name") private String name;
 
@@ -25,6 +25,6 @@ import com.google.gson.annotations.SerializedName;
   }
 
   @Override public String toString() {
-    return "ProductionCompaniesItem{" + "name = '" + name + '\'' + ",id = '" + id + '\'' + "}";
+    return "GenresItem{" + "name = '" + name + '\'' + ",id = '" + id + '\'' + "}";
   }
 }

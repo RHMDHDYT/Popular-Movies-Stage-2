@@ -1,7 +1,7 @@
-package com.rahmad.popularmoviesstage1.util;
+package com.rahmad.popularmoviesstage2.util;
 
-import com.rahmad.popularmoviesstage1.models.moviedetail.MovieDetail;
-import com.rahmad.popularmoviesstage1.models.movielist.MovieResponse;
+import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail;
+import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

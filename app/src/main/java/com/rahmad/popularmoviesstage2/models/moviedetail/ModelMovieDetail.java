@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1.models.moviedetail;
+package com.rahmad.popularmoviesstage2.models.moviedetail;
 
 import android.os.Parcel;
 import android.os.Parcelable;

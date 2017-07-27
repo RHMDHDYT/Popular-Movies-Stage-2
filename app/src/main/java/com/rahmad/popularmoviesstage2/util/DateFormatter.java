@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1.util;
+package com.rahmad.popularmoviesstage2.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

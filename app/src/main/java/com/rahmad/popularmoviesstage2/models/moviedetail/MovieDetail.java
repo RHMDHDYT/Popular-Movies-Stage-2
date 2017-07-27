@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1.models.moviedetail;
+package com.rahmad.popularmoviesstage2.models.moviedetail;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;

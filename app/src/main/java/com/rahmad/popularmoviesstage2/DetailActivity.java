@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage1;
+package com.rahmad.popularmoviesstage2;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -14,12 +14,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.rahmad.popularmoviesstage1.models.moviedetail.ModelMovieDetail;
-import com.rahmad.popularmoviesstage1.models.moviedetail.MovieDetail;
-import com.rahmad.popularmoviesstage1.util.ApiClient;
-import com.rahmad.popularmoviesstage1.util.ApiInterface;
-import com.rahmad.popularmoviesstage1.util.DateFormatter;
-import com.rahmad.popularmoviesstage1.util.NetworkUtil;
+import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail;
+import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail;
+import com.rahmad.popularmoviesstage2.util.ApiClient;
+import com.rahmad.popularmoviesstage2.util.ApiInterface;
+import com.rahmad.popularmoviesstage2.util.DateFormatter;
+import com.rahmad.popularmoviesstage2.util.NetworkUtil;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
