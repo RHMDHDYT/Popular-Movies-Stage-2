@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
   private static final int highestRatedState = 2;
   private static final int favoriteState = 3;
   private Bundle savedInstanceState;
+  private static final int TIME_DELAY = 2000;
+  private static long back_pressed;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -368,5 +371,19 @@ public class MainActivity extends AppCompatActivity {
             .enableWebKitInspector(
                 Stetho.defaultInspectorModulesProvider(this))
             .build());
+  }
+
+  @Override
+  public void onBackPressed() {
+    //double tap back button to quit app
+    Toast toast =
+        Toast.makeText(getBaseContext(), getResources().getString(R.string.confirmation_quit), Toast.LENGTH_SHORT);
+    if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+      toast.cancel();
+      finish();
+    } else {
+      toast.show();
+    }
+    back_pressed = System.currentTimeMillis();
   }
 }
