@@ -155,8 +155,6 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
         contentValues.put(FavoriteEntry.COLUMN_TITLE, modelMovieDetail.getOriginalTitle());
         contentValues.put(FavoriteEntry.COLUMN_THUMBNAIL, modelMovieDetail.getPosterPath());
 
-//        getContentResolver().insert(FavoriteEntry.CONTENT_URI, contentValues);
-
         Cursor cursor = getContentResolver()
             .query(FavoriteEntry.CONTENT_URI, null, FavoriteEntry.COLUMN_MOVIE_ID + "=" +
                 movieId.toString(), null, null);

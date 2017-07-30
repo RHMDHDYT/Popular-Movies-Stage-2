@@ -8,8 +8,10 @@
   <string name="failed_getting_data_caption">Failed getting data.</string>
   <string name="most_popular_caption">Most Popular</string>
   <string name="highest_rated_caption">Highest Rated</string>
+  <string name="favorited_caption">Favorited</string>
   <string name="most_popular_movies_caption">Most Popular Movies</string>
   <string name="highest_rated_movies_caption">Highest Rated Movies</string>
+  <string name="favorite_movies_caption">Favorited Movies</string>
   <string name="synopsis_caption">Synopsis</string>
   <string name="button_ok">OK</string>
   <string name="loading_caption">Loading…</string>
