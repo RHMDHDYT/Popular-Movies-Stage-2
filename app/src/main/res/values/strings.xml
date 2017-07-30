@@ -13,6 +13,7 @@
   <string name="loading_caption">Loading…</string>
   <string name="rating_placeholder_caption"> %.1f / 10</string>
   <string name="image_poster_description">Image Poster</string>
+  <string name="image_play_description">Play Trailer</string>
   <string name="image_backdrop_description">Image Backdrop</string>
 
   <string name="dummy_movie_title">The War of Planet Apes</string>

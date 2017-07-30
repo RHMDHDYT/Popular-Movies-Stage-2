@@ -69,6 +69,20 @@
           app:layout_constraintVertical_bias="0.5"
           />
 
+        <ImageView
+          android:id="@+id/imageViewPlayIcon"
+          android:layout_width="56dp"
+          android:layout_height="56dp"
+          android:adjustViewBounds="true"
+          android:contentDescription="@string/image_play_description"
+          android:src="@drawable/ic_play"
+          app:layout_constraintBottom_toBottomOf="@+id/imageViewPoster"
+          app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
+          app:layout_constraintLeft_toLeftOf="@+id/imageViewPoster"
+          app:layout_constraintRight_toRightOf="@+id/imageViewPoster"
+          app:layout_constraintStart_toStartOf="@+id/imageViewPoster"
+          app:layout_constraintTop_toTopOf="@+id/imageViewPoster"/>
+
         <View
           android:id="@+id/viewTop"
           android:layout_width="@dimen/constraint_match_parent"
@@ -236,13 +250,13 @@
 
       <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewReviews"
+        android:scrollbarStyle="outsideInset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
         android:scrollbarSize="2dp"
-        android:scrollbarStyle="outsideInset"
         android:scrollbarThumbHorizontal="@color/whiteee"
         android:scrollbars="horizontal"
-        android:fadeScrollbars="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_default="wrap"
