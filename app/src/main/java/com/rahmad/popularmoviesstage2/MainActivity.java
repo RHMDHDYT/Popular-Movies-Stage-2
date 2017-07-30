@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse;
@@ -89,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
     //set api caller
     apiService = ApiClient.getClient().create(ApiInterface.class);
 
+    //get movies data
+    clearListData();
+    getMoviesData(savedInstanceState);
+
     //set on refresh listener
     swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
@@ -101,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    //get movies data
-    clearListData();
-    getMoviesData(savedInstanceState);
+
+    //reload list when current list is favorited movies when activity resumed to refresh active favorited movies
+    if (currentState == favoriteState) {
+      clearListData();
+      getMoviesData(savedInstanceState);
+    }
+
   }
 
   private void setToolbarTitle() {
