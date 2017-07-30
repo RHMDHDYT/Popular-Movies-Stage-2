@@ -373,17 +373,4 @@ public class MainActivity extends AppCompatActivity {
             .build());
   }
 
-  @Override
-  public void onBackPressed() {
-    //double tap back button to quit app
-    Toast toast =
-        Toast.makeText(getBaseContext(), getResources().getString(R.string.confirmation_quit), Toast.LENGTH_SHORT);
-    if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
-      toast.cancel();
-      finish();
-    } else {
-      toast.show();
-    }
-    back_pressed = System.currentTimeMillis();
-  }
 }
