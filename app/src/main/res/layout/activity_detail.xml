@@ -71,6 +71,7 @@
           />
 
         <ImageView
+          android:visibility="gone"
           android:id="@+id/imageViewPlayIcon"
           android:layout_width="@dimen/play_icon_width"
           android:layout_height="@dimen/play_icon_height"

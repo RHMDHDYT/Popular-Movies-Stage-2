@@ -3,6 +3,7 @@ package com.rahmad.popularmoviesstage2;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -25,6 +27,7 @@ import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail;
 import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail;
 import com.rahmad.popularmoviesstage2.models.reviews.ReviewResultsItem;
 import com.rahmad.popularmoviesstage2.models.reviews.Reviews;
+import com.rahmad.popularmoviesstage2.models.trailer.Trailer;
 import com.rahmad.popularmoviesstage2.util.ApiClient;
 import com.rahmad.popularmoviesstage2.util.ApiInterface;
 import com.rahmad.popularmoviesstage2.util.DateFormatter;
@@ -58,11 +61,15 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
   private CollapsingToolbarLayout collapsingToolbarLayout;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_detail_key";
   private static final String KEY_SAVED_REVIEW_INSTANCE_STATE = "movie_reviews_key";
+  private static final String KEY_SAVED_TRAILER_INSTANCE_STATE = "movie_trailer_key";
   private ModelMovieDetail modelMovieDetail = new ModelMovieDetail();
   private ProgressDialog progressDialog;
   private AlertDialog.Builder builder;
   private TextView textInfoCaption;
   private ProgressBar progressBar;
+  private ImageView imagePlayIcon;
+  private String idTrailer;
+  private static final String YOUTUBE_ENDPOINT = "https://www.youtube.com/watch?v=";
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +88,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     recyclerViewReviews = (RecyclerView) findViewById(R.id.recyclerViewReviews);
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+    imagePlayIcon = (ImageView) findViewById(R.id.imageViewPlayIcon);
 
     SnapHelper snapHelper = new LinearSnapHelper();
     snapHelper.attachToRecyclerView(recyclerViewReviews);
@@ -116,7 +124,18 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
 
       getDataDetail(apiService, movieId, savedInstanceState);
       getReviews(apiService, movieId, savedInstanceState);
+      getTrailer(apiService, movieId, savedInstanceState);
     }
+
+    imagePlayIcon.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+            Uri.parse(YOUTUBE_ENDPOINT + idTrailer));
+
+        startActivity(browserIntent);
+      }
+    });
   }
 
   @Override
@@ -124,6 +143,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     outState.putParcelable(KEY_SAVED_INSTANCE_STATE, modelMovieDetail);
     outState.putParcelableArrayList(KEY_SAVED_REVIEW_INSTANCE_STATE,
         (ArrayList<? extends Parcelable>) reviewResultsItems);
+    outState.putString(KEY_SAVED_TRAILER_INSTANCE_STATE, idTrailer);
 
     super.onSaveInstanceState(outState);
   }
@@ -237,6 +257,45 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     }
   }
 
+  private void getTrailer(ApiInterface apiService, int movieId, Bundle savedInstanceState) {
+
+    Log.d("Movie Id", String.valueOf(movieId));
+    Call<Trailer> callTrailer = apiService.getTrailer(movieId, BuildConfig.API_KEY);
+
+    if (NetworkUtil.isOnline(this)) {
+      if (savedInstanceState == null || !savedInstanceState.containsKey(KEY_SAVED_TRAILER_INSTANCE_STATE)) {
+
+        callTrailer.clone().enqueue(new Callback<Trailer>() {
+          @Override
+          public void onResponse(@NonNull Call<Trailer> call, @NonNull Response<Trailer> response) {
+            Log.d("Response Detail", response.body().toString());
+            Trailer model = response.body();
+
+            if (model != null) {
+              mapTrailerData(model);
+            }
+          }
+
+          @Override
+          public void onFailure(@NonNull Call<Trailer> call, @NonNull Throwable t) {
+
+          }
+        });
+      } else {
+        idTrailer = savedInstanceState.getString(KEY_SAVED_TRAILER_INSTANCE_STATE);
+      }
+    }
+  }
+
+  private void mapTrailerData(Trailer model) {
+    if (model.getResults().size() == 0) {
+      hidePlayIcon();
+    } else {
+      showPlayIcon();
+      idTrailer = model.getResults().get(0).getKey();
+    }
+  }
+
   private void showReviewsData(Reviews model) {
     if (model.getTotalResults() == 0) {
       showNoReviewsCaption();
@@ -249,6 +308,14 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
   private void clearReviewListData() {
     reviewResultsItems.clear();
     reviewsAdapter.notifyDataSetChanged();
+  }
+
+  private void showPlayIcon() {
+    imagePlayIcon.setVisibility(View.VISIBLE);
+  }
+
+  private void hidePlayIcon() {
+    imagePlayIcon.setVisibility(View.GONE);
   }
 
   private void showData(ModelMovieDetail modelMovieDetail) {
