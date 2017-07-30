@@ -3,6 +3,7 @@
   <string name="detail_movie_caption">Detail Movie</string>
   <string name="no_connectivity_caption">Oops, no internet connection.</string>
   <string name="no_data_caption">No data available.</string>
+  <string name="no_data_reviews_caption">There are no reviews.</string>
   <string name="failed_getting_data_caption">Failed getting data.</string>
   <string name="most_popular_caption">Most Popular</string>
   <string name="highest_rated_caption">Highest Rated</string>

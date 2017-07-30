@@ -1,8 +1,9 @@
 package com.rahmad.popularmoviesstage2.models.reviews;
 
+import android.os.Parcel;
 import com.google.gson.annotations.SerializedName;
 
-public class ReviewResultsItem {
+public class ReviewResultsItem implements android.os.Parcelable {
 
   @SerializedName("author")
   private String author;
@@ -58,4 +59,39 @@ public class ReviewResultsItem {
             ",url = '" + url + '\'' +
             "}";
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.author);
+    dest.writeString(this.id);
+    dest.writeString(this.content);
+    dest.writeString(this.url);
+  }
+
+  public ReviewResultsItem() {
+  }
+
+  protected ReviewResultsItem(Parcel in) {
+    this.author = in.readString();
+    this.id = in.readString();
+    this.content = in.readString();
+    this.url = in.readString();
+  }
+
+  public static final Creator<ReviewResultsItem> CREATOR = new Creator<ReviewResultsItem>() {
+    @Override
+    public ReviewResultsItem createFromParcel(Parcel source) {
+      return new ReviewResultsItem(source);
+    }
+
+    @Override
+    public ReviewResultsItem[] newArray(int size) {
+      return new ReviewResultsItem[size];
+    }
+  };
 }

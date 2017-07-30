@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,7 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail;
@@ -54,9 +57,12 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
   private List<ReviewResultsItem> reviewResultsItems = new ArrayList<>();
   private CollapsingToolbarLayout collapsingToolbarLayout;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_detail_key";
+  private static final String KEY_SAVED_REVIEW_INSTANCE_STATE = "movie_reviews_key";
   private ModelMovieDetail modelMovieDetail = new ModelMovieDetail();
   private ProgressDialog progressDialog;
   private AlertDialog.Builder builder;
+  private TextView textInfoCaption;
+  private ProgressBar progressBar;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +79,8 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     ratingBar = (RatingBar) findViewById(R.id.ratingBar);
     collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
     recyclerViewReviews = (RecyclerView) findViewById(R.id.recyclerViewReviews);
+    textInfoCaption = (TextView) findViewById(R.id.text_caption);
+    progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
     SnapHelper snapHelper = new LinearSnapHelper();
     snapHelper.attachToRecyclerView(recyclerViewReviews);
@@ -114,6 +122,8 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     outState.putParcelable(KEY_SAVED_INSTANCE_STATE, modelMovieDetail);
+    outState.putParcelableArrayList(KEY_SAVED_REVIEW_INSTANCE_STATE,
+        (ArrayList<? extends Parcelable>) reviewResultsItems);
 
     super.onSaveInstanceState(outState);
   }
@@ -179,34 +189,66 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     if (NetworkUtil.isOnline(this)) {
 
       //null and check saved instance state
-      if (savedInstanceState == null || !savedInstanceState.containsKey(KEY_SAVED_INSTANCE_STATE)) {
+      if (savedInstanceState == null || !savedInstanceState.containsKey(KEY_SAVED_REVIEW_INSTANCE_STATE)) {
+        showProgressReviewBar();
 
         callReviews.clone().enqueue(new Callback<Reviews>() {
           @Override
           public void onResponse(@NonNull Call<Reviews> call, @NonNull Response<Reviews> response) {
+            hideProgressReviewBar();
             Log.d("Response Detail", response.body().toString());
             Reviews model = response.body();
 
             if (model != null) {
-
-              reviewResultsItems.addAll(model.getResults());
-              reviewsAdapter.notifyDataSetChanged();
+              hideNoReviewsCaption();
+              showReviewsData(model);
             } else {
-
+              showNoReviewsCaption();
             }
           }
 
           @Override
           public void onFailure(@NonNull Call<Reviews> call, @NonNull Throwable t) {
+            hideProgressReviewBar();
+            showFailedGettingReviewsCaption();
 
           }
         });
       } else {
+        hideProgressReviewBar();
+
+        List<ReviewResultsItem> parcelableData = savedInstanceState
+            .getParcelableArrayList(KEY_SAVED_REVIEW_INSTANCE_STATE);
+
+        assert parcelableData != null;
+        reviewResultsItems.addAll(parcelableData);
+
+        if (reviewResultsItems.size() == 0) {
+          showNoReviewsCaption();
+          clearReviewListData();
+        } else {
+          hideNoReviewsCaption();
+          reviewsAdapter.notifyDataSetChanged();
+        }
 
       }
     } else {
-
+      showFailedGettingReviewsCaption();
     }
+  }
+
+  private void showReviewsData(Reviews model) {
+    if (model.getTotalResults() == 0) {
+      showNoReviewsCaption();
+    } else {
+      reviewResultsItems.addAll(model.getResults());
+      reviewsAdapter.notifyDataSetChanged();
+    }
+  }
+
+  private void clearReviewListData() {
+    reviewResultsItems.clear();
+    reviewsAdapter.notifyDataSetChanged();
   }
 
   private void showData(ModelMovieDetail modelMovieDetail) {
@@ -266,6 +308,28 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     builder.setMessage(getString(R.string.failed_getting_data_caption));
     AlertDialog alert = builder.create();
     alert.show();
+  }
+
+  private void showNoReviewsCaption() {
+    textInfoCaption.setText(getString(R.string.no_data_reviews_caption));
+    textInfoCaption.setVisibility(View.VISIBLE);
+  }
+
+  private void showFailedGettingReviewsCaption() {
+    textInfoCaption.setText(getString(R.string.failed_getting_data_caption));
+    textInfoCaption.setVisibility(View.VISIBLE);
+  }
+
+  private void hideNoReviewsCaption() {
+    textInfoCaption.setVisibility(View.GONE);
+  }
+
+  private void showProgressReviewBar() {
+    progressBar.setVisibility(View.VISIBLE);
+  }
+
+  private void hideProgressReviewBar() {
+    progressBar.setVisibility(View.GONE);
   }
 
   private void mappingNecessaryData(MovieDetail movieDetail) {
