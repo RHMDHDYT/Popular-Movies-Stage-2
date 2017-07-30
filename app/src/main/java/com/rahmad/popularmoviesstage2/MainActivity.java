@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.facebook.stetho.Stetho;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResultsItem;
 import com.rahmad.popularmoviesstage2.util.ApiClient;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
   @Override protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    initStetho();
 
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -269,5 +272,15 @@ public class MainActivity extends AppCompatActivity {
 
   private void hideTextCaption() {
     textInfoCaption.setVisibility(View.GONE);
+  }
+
+  private void initStetho(){
+    Stetho.initialize(
+        Stetho.newInitializerBuilder(this)
+            .enableDumpapp(
+                Stetho.defaultDumperPluginsProvider(this))
+            .enableWebKitInspector(
+                Stetho.defaultInspectorModulesProvider(this))
+            .build());
   }
 }

@@ -1,8 +1,10 @@
 package com.rahmad.popularmoviesstage2;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry;
 import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail;
 import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail;
 import com.rahmad.popularmoviesstage2.models.reviews.ReviewResultsItem;
@@ -69,7 +74,9 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
   private ProgressBar progressBar;
   private ImageView imagePlayIcon;
   private String idTrailer;
+  private LikeButton buttonFavorite;
   private static final String YOUTUBE_ENDPOINT = "https://www.youtube.com/watch?v=";
+  private Integer movieId;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +96,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     imagePlayIcon = (ImageView) findViewById(R.id.imageViewPlayIcon);
+    buttonFavorite = (LikeButton) findViewById(R.id.buttonFavorite);
 
     SnapHelper snapHelper = new LinearSnapHelper();
     snapHelper.attachToRecyclerView(recyclerViewReviews);
@@ -120,7 +128,9 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     Intent intent = getIntent();
 
     if (intent.hasExtra(ConstantData.MOVIE_ID_KEY)) {
-      Integer movieId = Integer.parseInt(intent.getStringExtra(ConstantData.MOVIE_ID_KEY));
+      movieId = Integer.parseInt(intent.getStringExtra(ConstantData.MOVIE_ID_KEY));
+      //check favorite flag
+      checkFavFlag();
 
       getDataDetail(apiService, movieId, savedInstanceState);
       getReviews(apiService, movieId, savedInstanceState);
@@ -136,6 +146,54 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
         startActivity(browserIntent);
       }
     });
+
+    buttonFavorite.setOnLikeListener(new OnLikeListener() {
+      @Override
+      public void liked(LikeButton likeButton) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FavoriteEntry.COLUMN_MOVIE_ID, movieId);
+        contentValues.put(FavoriteEntry.COLUMN_TITLE, modelMovieDetail.getOriginalTitle());
+        contentValues.put(FavoriteEntry.COLUMN_THUMBNAIL, modelMovieDetail.getPosterPath());
+
+//        getContentResolver().insert(FavoriteEntry.CONTENT_URI, contentValues);
+
+        Cursor cursor = getContentResolver()
+            .query(FavoriteEntry.CONTENT_URI, null, FavoriteEntry.COLUMN_MOVIE_ID + "=" +
+                movieId.toString(), null, null);
+
+        if (cursor != null) {
+          if (cursor.getCount() == 0) {
+            getContentResolver().insert(FavoriteEntry.CONTENT_URI, contentValues);
+          } else {
+            getContentResolver().update(FavoriteEntry.CONTENT_URI, contentValues, FavoriteEntry.COLUMN_MOVIE_ID + "=" +
+                movieId.toString(), null);
+          }
+        }
+
+
+      }
+
+      @Override
+      public void unLiked(LikeButton likeButton) {
+        getContentResolver().delete(FavoriteEntry.CONTENT_URI, FavoriteEntry.COLUMN_MOVIE_ID + "=" +
+            movieId.toString(), null);
+
+      }
+    });
+  }
+
+  private void checkFavFlag() {
+    Cursor cursor = getContentResolver()
+        .query(FavoriteEntry.CONTENT_URI, null, FavoriteEntry.COLUMN_MOVIE_ID + "=" +
+            movieId.toString(), null, null);
+
+    if (cursor != null) {
+      if (cursor.getCount() > 0) {
+        buttonFavorite.setLiked(true);
+      } else {
+        buttonFavorite.setLiked(false);
+      }
+    }
   }
 
   @Override
