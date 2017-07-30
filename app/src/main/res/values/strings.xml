@@ -1,21 +1,29 @@
 <resources>
-  <string name="app_name">Popular Movies Stage 1</string>
+  <string name="app_name">Popular Movies Stage 2</string>
+  <string name="content_authority">com.rahmad.popularmoviesstage2.app</string>
   <string name="detail_movie_caption">Detail Movie</string>
   <string name="no_connectivity_caption">Oops, no internet connection.</string>
   <string name="no_data_caption">No data available.</string>
+  <string name="no_data_reviews_caption">There are no reviews.</string>
   <string name="failed_getting_data_caption">Failed getting data.</string>
   <string name="most_popular_caption">Most Popular</string>
   <string name="highest_rated_caption">Highest Rated</string>
+  <string name="favorited_caption">Favorited</string>
   <string name="most_popular_movies_caption">Most Popular Movies</string>
   <string name="highest_rated_movies_caption">Highest Rated Movies</string>
+  <string name="favorite_movies_caption">Favorited Movies</string>
   <string name="synopsis_caption">Synopsis</string>
+  <string name="reviews_caption">Reviews</string>
   <string name="button_ok">OK</string>
   <string name="loading_caption">Loading…</string>
   <string name="rating_placeholder_caption"> %.1f / 10</string>
   <string name="image_poster_description">Image Poster</string>
+  <string name="image_play_description">Play Trailer</string>
   <string name="image_backdrop_description">Image Backdrop</string>
+  <string name="confirmation_quit">Press once again to exit the app.</string>
 
   <string name="dummy_movie_title">The War of Planet Apes</string>
+  <string name="dummy_date">2017</string>
   <string name="dummy_movie_synopsis">Lorem ipsum dolor sit amet, vix minim vulputate ex, animal aliquip accommodare
     ea mei. Usu eros inimicus pertinacia eu, in est tale fabellas. Nec ut atqui causae assueverit.</string>
   <string name="dummy_movie_rating">8.1 / 10</string>

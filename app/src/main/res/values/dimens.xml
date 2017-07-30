@@ -7,9 +7,24 @@
   <dimen name="margin_medium">16dp</dimen>
   <dimen name="margin_large">24dp</dimen>
   <dimen name="margin_extra_large">36dp</dimen>
+  <dimen name="margin_extra_extra_large">48dp</dimen>
+
+  <dimen name="padding_empty">0dp</dimen>
+  <dimen name="padding_small">8dp</dimen>
+  <dimen name="padding_medium">16dp</dimen>
+  <dimen name="padding_large">24dp</dimen>
+  <dimen name="padding_extra_large">36dp</dimen>
+  <dimen name="padding_extra_extra_large">48dp</dimen>
 
   <dimen name="padding_footer">24dp</dimen>
   <dimen name="line_height_thin">1dp</dimen>
+  <dimen name="line_height_regular">2dp</dimen>
   <dimen name="text_size_movie_title">24sp</dimen>
   <dimen name="text_size_caption_synopsis">20sp</dimen>
+
+  <dimen name="collapsing_content_height">200dp</dimen>
+  <dimen name="poster_width">110dp</dimen>
+
+  <dimen name="play_icon_height">56dp</dimen>
+  <dimen name="play_icon_width">56dp</dimen>
 </resources>
