@@ -9,6 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,11 +20,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail;
 import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail;
+import com.rahmad.popularmoviesstage2.models.reviews.ReviewResultsItem;
+import com.rahmad.popularmoviesstage2.models.reviews.Reviews;
 import com.rahmad.popularmoviesstage2.util.ApiClient;
 import com.rahmad.popularmoviesstage2.util.ApiInterface;
 import com.rahmad.popularmoviesstage2.util.DateFormatter;
 import com.rahmad.popularmoviesstage2.util.NetworkUtil;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +39,7 @@ import retrofit2.Response;
  * Copyright 2017
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.MoviesAdapterOnClickHandler {
 
   private TextView textTitle;
   private TextView textSynopsisCaption;
@@ -41,13 +49,17 @@ public class DetailActivity extends AppCompatActivity {
   private TextView textRatingContent;
   private TextView textDateRelease;
   private RatingBar ratingBar;
+  private RecyclerView recyclerViewReviews;
+  private ReviewsAdapter reviewsAdapter;
+  private List<ReviewResultsItem> reviewResultsItems = new ArrayList<>();
   private CollapsingToolbarLayout collapsingToolbarLayout;
   private static final String KEY_SAVED_INSTANCE_STATE = "movie_detail_key";
   private ModelMovieDetail modelMovieDetail = new ModelMovieDetail();
   private ProgressDialog progressDialog;
   private AlertDialog.Builder builder;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
 
@@ -60,11 +72,22 @@ public class DetailActivity extends AppCompatActivity {
     textDateRelease = (TextView) findViewById(R.id.textDateRelease);
     ratingBar = (RatingBar) findViewById(R.id.ratingBar);
     collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+    recyclerViewReviews = (RecyclerView) findViewById(R.id.recyclerViewReviews);
 
+    SnapHelper snapHelper = new LinearSnapHelper();
+    snapHelper.attachToRecyclerView(recyclerViewReviews);
+    reviewsAdapter = new ReviewsAdapter(reviewResultsItems, this, this);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    linearLayoutManager.setAutoMeasureEnabled(true);
+    recyclerViewReviews.setNestedScrollingEnabled(false);
+    recyclerViewReviews.setHasFixedSize(false);
+    recyclerViewReviews.setLayoutManager(linearLayoutManager);
+    recyclerViewReviews.setAdapter(reviewsAdapter);
     progressDialog = new ProgressDialog(this);
     builder = new AlertDialog.Builder(this);
     builder.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
         finish();
       }
     });
@@ -84,10 +107,12 @@ public class DetailActivity extends AppCompatActivity {
       Integer movieId = Integer.parseInt(intent.getStringExtra(ConstantData.MOVIE_ID_KEY));
 
       getDataDetail(apiService, movieId, savedInstanceState);
+      getReviews(apiService, movieId, savedInstanceState);
     }
   }
 
-  @Override protected void onSaveInstanceState(Bundle outState) {
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
     outState.putParcelable(KEY_SAVED_INSTANCE_STATE, modelMovieDetail);
 
     super.onSaveInstanceState(outState);
@@ -116,7 +141,8 @@ public class DetailActivity extends AppCompatActivity {
         showProgressBar();
 
         callMovieDetail.clone().enqueue(new Callback<MovieDetail>() {
-          @Override public void onResponse(@NonNull Call<MovieDetail> call, @NonNull Response<MovieDetail> response) {
+          @Override
+          public void onResponse(@NonNull Call<MovieDetail> call, @NonNull Response<MovieDetail> response) {
             hideProgressBar();
             Log.d("Response Detail", response.body().toString());
             MovieDetail model = response.body();
@@ -130,7 +156,8 @@ public class DetailActivity extends AppCompatActivity {
             }
           }
 
-          @Override public void onFailure(@NonNull Call<MovieDetail> call, @NonNull Throwable t) {
+          @Override
+          public void onFailure(@NonNull Call<MovieDetail> call, @NonNull Throwable t) {
             hideProgressBar();
             showFailedCaption();
           }
@@ -143,6 +170,42 @@ public class DetailActivity extends AppCompatActivity {
       }
     } else {
       showNoConnectivityCaption();
+    }
+  }
+
+  private void getReviews(ApiInterface apiService, final int movieId, Bundle savedInstanceState) {
+    Call<Reviews> callReviews = apiService.getReviews(movieId, BuildConfig.API_KEY);
+
+    if (NetworkUtil.isOnline(this)) {
+
+      //null and check saved instance state
+      if (savedInstanceState == null || !savedInstanceState.containsKey(KEY_SAVED_INSTANCE_STATE)) {
+
+        callReviews.clone().enqueue(new Callback<Reviews>() {
+          @Override
+          public void onResponse(@NonNull Call<Reviews> call, @NonNull Response<Reviews> response) {
+            Log.d("Response Detail", response.body().toString());
+            Reviews model = response.body();
+
+            if (model != null) {
+
+              reviewResultsItems.addAll(model.getResults());
+              reviewsAdapter.notifyDataSetChanged();
+            } else {
+
+            }
+          }
+
+          @Override
+          public void onFailure(@NonNull Call<Reviews> call, @NonNull Throwable t) {
+
+          }
+        });
+      } else {
+
+      }
+    } else {
+
     }
   }
 
@@ -170,7 +233,8 @@ public class DetailActivity extends AppCompatActivity {
     Log.d("Poster Url", posterUrl);
   }
 
-  @Override public boolean onSupportNavigateUp() {
+  @Override
+  public boolean onSupportNavigateUp() {
     finish();
     return true;
   }
@@ -212,5 +276,13 @@ public class DetailActivity extends AppCompatActivity {
     modelMovieDetail.setOverview(movieDetail.getOverview());
     modelMovieDetail.setVoteAverage(movieDetail.getVoteAverage());
     modelMovieDetail.setReleaseDate(movieDetail.getReleaseDate());
+  }
+
+  @Override
+  public void onClick(String data) {
+    //click action for recyclerview reviews
+
+//    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
+//    startActivity(browserIntent);
   }
 }

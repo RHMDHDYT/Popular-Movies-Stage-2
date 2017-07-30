@@ -8,6 +8,12 @@
   <dimen name="margin_large">24dp</dimen>
   <dimen name="margin_extra_large">36dp</dimen>
 
+  <dimen name="padding_empty">0dp</dimen>
+  <dimen name="padding_small">8dp</dimen>
+  <dimen name="padding_medium">16dp</dimen>
+  <dimen name="padding_large">24dp</dimen>
+  <dimen name="padding_extra_large">36dp</dimen>
+
   <dimen name="padding_footer">24dp</dimen>
   <dimen name="line_height_thin">1dp</dimen>
   <dimen name="text_size_movie_title">24sp</dimen>
