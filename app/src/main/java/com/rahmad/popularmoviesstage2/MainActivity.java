@@ -245,10 +245,12 @@ public class MainActivity extends AppCompatActivity {
         } while (cursor.moveToNext());
 
         processOfflineData(listFavoritedMovies);
+      } else {
+        showNoFavoritedData();
       }
       cursor.close();
     } else {
-      processFailedData();
+      showNoFavoritedData();
     }
   }
 
@@ -293,6 +295,13 @@ public class MainActivity extends AppCompatActivity {
     swipeContainer.setRefreshing(false);
     hideProgressBar();
     showFailedCaption();
+  }
+
+  private void showNoFavoritedData() {
+    //show UI error state
+    swipeContainer.setRefreshing(false);
+    hideProgressBar();
+    showNoFavoritedCaption();
   }
 
   @Override
@@ -363,6 +372,11 @@ public class MainActivity extends AppCompatActivity {
 
   private void showFailedCaption() {
     textInfoCaption.setText(getString(R.string.failed_getting_data_caption));
+    textInfoCaption.setVisibility(View.VISIBLE);
+  }
+
+  private void showNoFavoritedCaption() {
+    textInfoCaption.setText(getString(R.string.no_favorited_data_caption));
     textInfoCaption.setVisibility(View.VISIBLE);
   }
 
