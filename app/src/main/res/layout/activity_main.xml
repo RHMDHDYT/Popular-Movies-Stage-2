@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,7 +9,7 @@
     tools:ignore="Overdraw"
     >
 
-  <android.support.v4.widget.SwipeRefreshLayout
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/swipeContainer"
       android:layout_width="@dimen/constraint_match_parent"
@@ -20,7 +20,7 @@
       app:layout_constraintTop_toTopOf="parent"
       >
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_poster_movies"
         android:layout_width="@dimen/constraint_match_parent"
         android:layout_height="@dimen/constraint_match_parent"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-  </android.support.v4.widget.SwipeRefreshLayout>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <ProgressBar
       android:id="@+id/progress_bar"
@@ -55,4 +55,4 @@
       app:layout_constraintTop_toTopOf="parent"
       />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
