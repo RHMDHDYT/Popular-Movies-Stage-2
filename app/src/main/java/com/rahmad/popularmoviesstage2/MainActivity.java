@@ -1,5 +1,6 @@
 package com.rahmad.popularmoviesstage2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.facebook.stetho.Stetho;
 import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse;
 import com.rahmad.popularmoviesstage2.models.movielist.MovieResultsItem;
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    initStetho();
     this.savedInstanceState = savedInstanceState;
 
     textInfoCaption = (TextView) findViewById(R.id.text_caption);
@@ -221,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
+  @SuppressLint("Range")
   private void getFavoritedMovies(Boolean withLoading) {
     hideTextCaption();
 
@@ -382,16 +382,6 @@ public class MainActivity extends AppCompatActivity {
 
   private void hideTextCaption() {
     textInfoCaption.setVisibility(View.GONE);
-  }
-
-  private void initStetho() {
-    Stetho.initialize(
-        Stetho.newInitializerBuilder(this)
-            .enableDumpapp(
-                Stetho.defaultDumperPluginsProvider(this))
-            .enableWebKitInspector(
-                Stetho.defaultInspectorModulesProvider(this))
-            .build());
   }
 
 }

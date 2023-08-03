@@ -63,6 +63,5 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
     implementation("com.github.jd-alexander:LikeButton:0.2.3")
-    implementation("com.facebook.stetho:stetho:1.1.1")
     testImplementation("junit:junit:4.12")
 }
