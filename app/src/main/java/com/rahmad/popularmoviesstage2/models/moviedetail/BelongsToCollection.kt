@@ -1,63 +1,15 @@
-package com.rahmad.popularmoviesstage2.models.moviedetail;
+package com.rahmad.popularmoviesstage2.models.moviedetail
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-@SuppressWarnings("unused") public class BelongsToCollection {
-
-  @SerializedName("backdrop_path") private String backdropPath;
-
-  @SerializedName("name") private String name;
-
-  @SerializedName("id") private int id;
-
-  @SerializedName("poster_path") private String posterPath;
-
-  public void setBackdropPath(String backdropPath) {
-    this.backdropPath = backdropPath;
-  }
-
-  public String getBackdropPath() {
-    return backdropPath;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setPosterPath(String posterPath) {
-    this.posterPath = posterPath;
-  }
-
-  public String getPosterPath() {
-    return posterPath;
-  }
-
-  @Override public String toString() {
-    return "BelongsToCollection{"
-        + "backdrop_path = '"
-        + backdropPath
-        + '\''
-        + ",name = '"
-        + name
-        + '\''
-        + ",id = '"
-        + id
-        + '\''
-        + ",poster_path = '"
-        + posterPath
-        + '\''
-        + "}";
-  }
-}
+@Suppress("unused")
+data class BelongsToCollection(
+    @SerializedName("backdrop_path")
+    private val backdropPath: String? = null,
+    @SerializedName("name")
+    private val name: String? = null,
+    @SerializedName("id")
+    private val id: Int = 0,
+    @SerializedName("poster_path")
+    private val posterPath: String? = null,
+)

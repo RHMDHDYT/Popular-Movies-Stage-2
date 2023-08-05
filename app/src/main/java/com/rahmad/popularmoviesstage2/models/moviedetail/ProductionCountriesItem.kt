@@ -1,30 +1,11 @@
-package com.rahmad.popularmoviesstage2.models.moviedetail;
+package com.rahmad.popularmoviesstage2.models.moviedetail
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-@SuppressWarnings("unused") class ProductionCountriesItem {
-
-  @SerializedName("iso_3166_1") private String iso31661;
-
-  @SerializedName("name") private String name;
-
-  public void setIso31661(String iso31661) {
-    this.iso31661 = iso31661;
-  }
-
-  public String getIso31661() {
-    return iso31661;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  @Override public String toString() {
-    return "ProductionCountriesItem{" + "iso_3166_1 = '" + iso31661 + '\'' + ",name = '" + name + '\'' + "}";
-  }
-}
+@Suppress("unused")
+data class ProductionCountriesItem(
+    @SerializedName("iso_3166_1")
+    private val iso31661: String? = null,
+    @SerializedName("name")
+    private val name: String? = null
+)

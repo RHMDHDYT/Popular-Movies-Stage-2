@@ -1,40 +1,37 @@
-package com.rahmad.popularmoviesstage2.db;
+package com.rahmad.popularmoviesstage2.db
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.net.Uri;
-import android.provider.BaseColumns;
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.net.Uri
+import android.provider.BaseColumns
 
-public class FavoriteContract {
+object FavoriteContract {
+    const val CONTENT_AUTHORITY = "com.rahmad.popularmoviesstage2.app"
+    val BASE_CONTENT_URI: Uri = Uri.parse("content://$CONTENT_AUTHORITY")
 
-  public static final String CONTENT_AUTHORITY = "com.rahmad.popularmoviesstage2.app";
+    object FavoriteEntry : BaseColumns {
+        const val TABLE_FAVORITE = "favorite"
+        const val ID = "id"
+        const val COLUMN_MOVIE_ID = "movie_id"
+        const val COLUMN_TITLE = "movie_title"
+        const val COLUMN_THUMBNAIL = "movie_thumbnail_url"
 
-  public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+        // Content uri
+        @JvmField
+        val CONTENT_URI: Uri = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_FAVORITE).build()
 
+        // Cursor of base type directory for multiple entries
+        const val CONTENT_DIR_TYPE =
+            ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_FAVORITE
 
-  public static final class FavoriteEntry implements BaseColumns {
+        // Cursor of base type item for single entry
+        const val CONTENT_ITEM_TYPE =
+            ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_FAVORITE
 
-    public static final String TABLE_FAVORITE = "favorite";
-
-    public static final String ID = "id";
-    public static final String COLUMN_MOVIE_ID = "movie_id";
-    public static final String COLUMN_TITLE = "movie_title";
-    public static final String COLUMN_THUMBNAIL = "movie_thumbnail_url";
-
-    // Content uri
-    public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
-        .appendPath(TABLE_FAVORITE).build();
-
-    // Cursor of base type directory for multiple entries
-    public static final String CONTENT_DIR_TYPE =
-        ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_FAVORITE;
-    // Cursor of base type item for single entry
-    public static final String CONTENT_ITEM_TYPE =
-        ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_FAVORITE;
-
-    // Building URIs on insertion
-    public static Uri buildFavoriteUri(long id) {
-      return ContentUris.withAppendedId(CONTENT_URI, id);
+        // Building URIs on insertion
+        @JvmStatic
+        fun buildFavoriteUri(id: Long): Uri {
+            return ContentUris.withAppendedId(CONTENT_URI, id)
+        }
     }
-  }
 }
