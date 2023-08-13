@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage2.models.trailer
+package com.rahmad.popularmoviesstage2.services.responses.trailer
 
 import com.google.gson.annotations.SerializedName
 

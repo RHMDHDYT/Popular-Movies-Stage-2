@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.rahmad.popularmoviesstage2.models.movielist.MovieResultsItem
+import com.rahmad.popularmoviesstage2.services.responses.movielist.MovieResultsItem
 import com.squareup.picasso.Picasso
 
 /**

@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry
-import com.rahmad.popularmoviesstage2.models.movielist.MovieResponse
-import com.rahmad.popularmoviesstage2.models.movielist.MovieResultsItem
+import com.rahmad.popularmoviesstage2.services.responses.movielist.MovieResponse
+import com.rahmad.popularmoviesstage2.services.responses.movielist.MovieResultsItem
 import com.rahmad.popularmoviesstage2.util.ApiClient
 import com.rahmad.popularmoviesstage2.util.ApiInterface
 import com.rahmad.popularmoviesstage2.util.AppSharedPref
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         swipeContainer = findViewById<View>(R.id.swipeContainer) as SwipeRefreshLayout
         appSharedPref = AppSharedPref(this)
         //get default state
-        currentState = appSharedPref!!.sortingState
+        currentState = appSharedPref!!.getSortingState()
         //set toolbar title
         setToolbarTitle()
         moviesAdapter = MoviesAdapter(
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         listMovies.adapter = moviesAdapter
 
         //set api caller
-        apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        apiService = ApiClient.client?.create(ApiInterface::class.java)
 
         //get movies data
         clearListData()
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
             moviesList as ArrayList<out Parcelable?>
         )
         //save current flag to shared preferences
-        appSharedPref!!.sortingState = currentState
+        appSharedPref!!.setSortingState(currentState ?: 1)
         appSharedPref!!.commit()
         super.onSaveInstanceState(outState)
     }
@@ -286,7 +286,7 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.action_highest_rated) {
             title = getString(R.string.highest_rated_movies_caption)
             currentState = highestRatedState
-            appSharedPref!!.sortingState = highestRatedState
+            appSharedPref!!.setSortingState(highestRatedState)
             appSharedPref!!.commit()
             clearListData()
             getMoviesData(null)
@@ -294,7 +294,7 @@ class MainActivity : AppCompatActivity() {
             //options for switching to popular movies
         } else if (id == R.id.action_most_popular) {
             currentState = popularState
-            appSharedPref!!.sortingState = popularState
+            appSharedPref!!.setSortingState(popularState)
             appSharedPref!!.commit()
             title = getString(R.string.most_popular_movies_caption)
             clearListData()
@@ -302,7 +302,7 @@ class MainActivity : AppCompatActivity() {
             return true
         } else if (id == R.id.action_favorited) {
             currentState = favoriteState
-            appSharedPref!!.sortingState = favoriteState
+            appSharedPref!!.setSortingState(favoriteState)
             appSharedPref!!.commit()
             title = getString(R.string.favorite_movies_caption)
             clearListData()

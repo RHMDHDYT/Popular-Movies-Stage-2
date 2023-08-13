@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage2.models.movielist
+package com.rahmad.popularmoviesstage2.services.responses.movielist
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

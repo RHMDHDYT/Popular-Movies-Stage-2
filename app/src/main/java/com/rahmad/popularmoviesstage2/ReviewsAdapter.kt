@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.rahmad.popularmoviesstage2.models.reviews.ReviewResultsItem
+import com.rahmad.popularmoviesstage2.services.responses.reviews.ReviewResultsItem
 
 /**
  * Created by rahmad on 7/2/17.

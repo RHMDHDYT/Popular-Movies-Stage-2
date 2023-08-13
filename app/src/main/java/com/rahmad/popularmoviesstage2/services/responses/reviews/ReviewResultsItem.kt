@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage2.models.reviews
+package com.rahmad.popularmoviesstage2.services.responses.reviews
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

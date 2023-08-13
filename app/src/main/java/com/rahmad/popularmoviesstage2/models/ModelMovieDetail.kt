@@ -1,4 +1,4 @@
-package com.rahmad.popularmoviesstage2.models.moviedetail
+package com.rahmad.popularmoviesstage2.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

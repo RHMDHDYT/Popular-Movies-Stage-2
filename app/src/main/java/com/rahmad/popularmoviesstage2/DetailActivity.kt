@@ -23,11 +23,11 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.rahmad.popularmoviesstage2.db.FavoriteContract.FavoriteEntry
-import com.rahmad.popularmoviesstage2.models.moviedetail.ModelMovieDetail
-import com.rahmad.popularmoviesstage2.models.moviedetail.MovieDetail
-import com.rahmad.popularmoviesstage2.models.reviews.ReviewResultsItem
-import com.rahmad.popularmoviesstage2.models.reviews.Reviews
-import com.rahmad.popularmoviesstage2.models.trailer.Trailer
+import com.rahmad.popularmoviesstage2.models.ModelMovieDetail
+import com.rahmad.popularmoviesstage2.services.responses.moviedetail.MovieDetail
+import com.rahmad.popularmoviesstage2.services.responses.reviews.ReviewResultsItem
+import com.rahmad.popularmoviesstage2.services.responses.reviews.Reviews
+import com.rahmad.popularmoviesstage2.services.responses.trailer.Trailer
 import com.rahmad.popularmoviesstage2.util.ApiClient
 import com.rahmad.popularmoviesstage2.util.ApiInterface
 import com.rahmad.popularmoviesstage2.util.DateFormatter
@@ -102,7 +102,7 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
         clearContent()
 
         //set api caller
-        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val apiService = ApiClient.client!!.create(ApiInterface::class.java)
         val intent = intent
         if (intent.hasExtra(ConstantData.MOVIE_ID_KEY)) {
             movieId = intent.getStringExtra(ConstantData.MOVIE_ID_KEY)!!.toInt()
@@ -201,10 +201,10 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
                 )
             ) {
                 showProgressBar()
-                callMovieDetail.clone().enqueue(object : Callback<MovieDetail> {
+                callMovieDetail!!.clone().enqueue(object : Callback<MovieDetail?> {
                     override fun onResponse(
-                        call: Call<MovieDetail>,
-                        response: Response<MovieDetail>
+                        call: Call<MovieDetail?>,
+                        response: Response<MovieDetail?>
                     ) {
                         hideProgressBar()
                         Log.d("Response Detail", response.body().toString())
@@ -217,7 +217,28 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
                         }
                     }
 
-                    override fun onFailure(call: Call<MovieDetail>, t: Throwable) {
+                    override fun onFailure(call: Call<MovieDetail?>, t: Throwable) {
+                        hideProgressBar()
+                        showFailedCaption()
+                    }
+                })
+                callMovieDetail!!.clone().enqueue(object : Callback<MovieDetail?> {
+                    override fun onResponse(
+                        call: Call<MovieDetail?>,
+                        response: Response<MovieDetail?>
+                    ) {
+                        hideProgressBar()
+                        Log.d("Response Detail", response.body().toString())
+                        val model = response.body()
+                        if (model != null) {
+                            mappingNecessaryData(model)
+                            showData(modelMovieDetail)
+                        } else {
+                            showNoDataCaption()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MovieDetail?>, t: Throwable) {
                         hideProgressBar()
                         showFailedCaption()
                     }
@@ -243,8 +264,8 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
                 )
             ) {
                 showProgressReviewBar()
-                callReviews.clone().enqueue(object : Callback<Reviews> {
-                    override fun onResponse(call: Call<Reviews>, response: Response<Reviews>) {
+                callReviews!!.clone().enqueue(object : Callback<Reviews?> {
+                    override fun onResponse(call: Call<Reviews?>, response: Response<Reviews?>) {
                         hideProgressReviewBar()
                         Log.d("Response Detail", response.body().toString())
                         val model = response.body()
@@ -256,7 +277,7 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
                         }
                     }
 
-                    override fun onFailure(call: Call<Reviews>, t: Throwable) {
+                    override fun onFailure(call: Call<Reviews?>, t: Throwable) {
                         hideProgressReviewBar()
                         showFailedGettingReviewsCaption()
                     }
@@ -287,14 +308,14 @@ class DetailActivity : AppCompatActivity(), ReviewsAdapter.MoviesAdapterOnClickH
                     KEY_SAVED_TRAILER_INSTANCE_STATE
                 )
             ) {
-                callTrailer.clone().enqueue(object : Callback<Trailer> {
-                    override fun onResponse(call: Call<Trailer>, response: Response<Trailer>) {
+                callTrailer!!.clone().enqueue(object : Callback<Trailer?> {
+                    override fun onResponse(call: Call<Trailer?>, response: Response<Trailer?>) {
                         Log.d("Response Detail", response.body().toString())
                         val model = response.body()
                         model?.let { mapTrailerData(it) }
                     }
 
-                    override fun onFailure(call: Call<Trailer>, t: Throwable) {}
+                    override fun onFailure(call: Call<Trailer?>, t: Throwable) {}
                 })
             } else {
                 idTrailer = savedInstanceState.getString(KEY_SAVED_TRAILER_INSTANCE_STATE)

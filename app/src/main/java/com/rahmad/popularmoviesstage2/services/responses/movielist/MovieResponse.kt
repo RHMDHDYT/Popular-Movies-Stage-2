@@ -1,16 +1,17 @@
-package com.rahmad.popularmoviesstage2.models.reviews
+package com.rahmad.popularmoviesstage2.services.responses.movielist
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-data class Reviews(
-    @SerializedName("id")
-    val id: Int = 0,
+@Parcelize
+data class MovieResponse(
     @SerializedName("page")
     val page: Int = 0,
     @SerializedName("total_pages")
     val totalPages: Int = 0,
     @SerializedName("results")
-    val results: List<ReviewResultsItem> = listOf(),
+    val results: List<MovieResultsItem> = mutableListOf(),
     @SerializedName("total_results")
     val totalResults: Int = 0,
-)
+) : Parcelable
